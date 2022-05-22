@@ -4,61 +4,49 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-    [SerializeField] private float forceMin = 12;
-    [SerializeField] private float forceMax = 16;
+    private const float minForce = 10;
+    private const float maxForce = 15;
+    private const float minTorque = -10;
+    private const float maxTorque = 10;
+    private const float minXPos = -3;
+    private const float maxXPos = 3;
+    private const float ySpawnPos = -2;
 
-    [SerializeField] private float torqueMax = 10;
-
-    [SerializeField] private float initialY = -2;
-    [SerializeField] private float initialPosXRange = 4;
-
-    [SerializeField] private int score = 10;
-
-    [SerializeField] private ParticleSystem explosionParticle;
-
-    private GameManager gameManager = null;
-
-    // Start is called before the first frame update
+    private Rigidbody targetRB;
     void Start()
     {
-        gameManager = GameObject.FindObjectOfType<GameManager>();
+        targetRB = GetComponent<Rigidbody>();
 
-        transform.position = new Vector3(Random.Range(-initialPosXRange, initialPosXRange), initialY, 0);
-
-        Rigidbody rb = GetComponent<Rigidbody>();
-
-        rb.AddForce(Vector3.up * Random.Range(forceMin, forceMax), ForceMode.Impulse);
-        rb.AddTorque(new Vector3(Random.Range(-torqueMax, torqueMax), Random.Range(-torqueMax, torqueMax), Random.Range(-torqueMax, torqueMax)), ForceMode.Impulse);
+        RandomForce();
+        RandomTorque();
+        RandomSpawnPos();
     }
 
-    void OnMouseDown()
+    void RandomForce()
     {
-        if (gameManager?.IsGameOver() == true) return;
-
-        if (explosionParticle)
-        {
-            Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
-        }
-
-        AudioClip clip = GetComponent<AudioSource>()?.clip;
-
-        if (clip)
-        {
-            AudioSource.PlayClipAtPoint(clip, Vector3.zero);
-        }
-
-        Destroy(gameObject);
-
-        gameManager?.AddScore(score);
+        targetRB.AddForce(Vector3.up * Random.Range(minForce, maxForce),
+            ForceMode.Impulse);
     }
 
-    void OnTriggerEnter(Collider other)
+    void RandomTorque()
+    {
+        targetRB.AddTorque(Random.Range(minTorque, maxTorque),
+            Random.Range(minTorque, maxTorque,
+            Random.Range(minTorque, maxTorque), ForceMode.Impulse);
+    }
+
+    void RandomSpawnPos();
+    {
+        transform.position = new Vector3(Random.Range(minXPos, maxXPos), ySpawnPos);
+    }
+    
+    private void OnMouseDown()
+    {
+        Destroy(GameObject);
+    }
+
+    private void OnTriggerEnter(Collider other)
     {
         Destroy(gameObject);
-
-        if (CompareTag("Good"))
-        {
-            gameManager?.GameOver();
-        }
     }
 }

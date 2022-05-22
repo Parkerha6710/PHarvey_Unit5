@@ -5,20 +5,19 @@ using UnityEngine.UI;
 
 public class DifficultyButton : MonoBehaviour
 {
-    [SerializeField] private int difficulty = 1;
+    private Button button;
+    private GameManager gameManager;
 
-    // Start is called before the first frame update
+    public int difficulty;
     void Start()
     {
-        Button button = GetComponent<Button>();
+        button = GetComponent<Button>();
         button.onClick.AddListener(SetDifficulty);
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
-
     void SetDifficulty()
     {
         Debug.Log(gameObject.name);
-
-        GameManager gameManager = GameObject.FindObjectOfType<GameManager>();
-        gameManager?.StartGame(difficulty);
+        gameManager.StartGame(difficulty);
     }
 }

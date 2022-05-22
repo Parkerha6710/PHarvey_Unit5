@@ -7,57 +7,65 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI scoreText = null;
+    private float spawnRate = 2.0f;
+    public List<GameObject> prefabs;
 
-    [SerializeField] Canvas gameOverUI = null;
-    [SerializeField] Canvas mainMenuUI = null;
-    [SerializeField] Canvas gameplayUI = null;
-
-    private SpawnManager spawnManager = null;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI gameOverText;
+    public Button restartButton;
+    public GameObject titleScreen;
 
     private int score = 0;
-    private bool gameOver = true;
+    private bool gameActive = false;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        spawnManager = GameObject.FindObjectOfType<SpawnManager>();
-        AddScore(0);
+        StartCoroutine(SpawnTarget());
+        UpdateScore(0);
     }
 
-    public void AddScore(int addScore)
+    public void StartGame()
     {
-        score += addScore;
-        
-        if (scoreText)
-        {
-            scoreText.text = "Score: " + score;
-        }
+        gameActive = true;
+        score = 0;
     }
-
-    public bool IsGameOver()
+    public void StartGame(int diff)
     {
-        return gameOver;
+        gameActive = true;
+        score = 0;
+        spawnRate /= Diff;
+        Debug.Log("Game spawn rate = " + spawnRate);
+        StartCoroutine(SpawnTarget());
+        UpdateScore(0);
+        titleScreen.gameObject.SetActive(false);
     }
-
     public void GameOver()
     {
-        gameOverUI?.gameObject.SetActive(true);
-        gameOver = true;
-        spawnManager?.StopSpawning();
+        gameActive = true;
+        gameOverText.gameObject.SetActive(true);
+        restartButton.gameObject.SetActive(true);
+    }
+    IEnumerator SpawnTarget()
+    {
+        while(gameActive)
+        {
+            yield return new WaitForSeconds(spawnRate);
+            Instantiate(prefabs[Random.Range(0, prefabs.Count)]);
+        }
+    }
+    public void UpdateScore(int scoreDelta)
+    {
+        score += scoreDelta;
+        if(score < 0)
+        {
+            score = 0;
+        }
+        scoreText.text = "Score: " + score;
+
     }
 
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    public void StartGame(int difficulty)
-    {
-        gameOver = false;
-        spawnManager?.StartSpawning(difficulty);
-
-        mainMenuUI?.gameObject.SetActive(false);
-        gameplayUI?.gameObject.SetActive(true);
     }
 }
