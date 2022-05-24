@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     {
         gameActive = true;
         score = 0;
-        spawnRate /= Diff;
+        spawnRate /= diff;
         Debug.Log("Game spawn rate = " + spawnRate);
         StartCoroutine(SpawnTarget());
         UpdateScore(0);
@@ -41,7 +41,8 @@ public class GameManager : MonoBehaviour
     }
     public void GameOver()
     {
-        gameActive = true;
+        Debug.Log("hit trigger");
+        gameActive = false;
         gameOverText.gameObject.SetActive(true);
         restartButton.gameObject.SetActive(true);
     }

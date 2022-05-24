@@ -11,11 +11,17 @@ public class Target : MonoBehaviour
     private const float minXPos = -3;
     private const float maxXPos = 3;
     private const float ySpawnPos = -2;
+   
+    public int points;
+    public ParticleSystem boom;
+    GameManager gameManager;
+    
 
     private Rigidbody targetRB;
     void Start()
     {
         targetRB = GetComponent<Rigidbody>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         RandomForce();
         RandomTorque();
@@ -31,22 +37,29 @@ public class Target : MonoBehaviour
     void RandomTorque()
     {
         targetRB.AddTorque(Random.Range(minTorque, maxTorque),
-            Random.Range(minTorque, maxTorque,
+            Random.Range(minTorque, maxTorque),
             Random.Range(minTorque, maxTorque), ForceMode.Impulse);
     }
 
-    void RandomSpawnPos();
+    void RandomSpawnPos()
     {
         transform.position = new Vector3(Random.Range(minXPos, maxXPos), ySpawnPos);
     }
-    
+
     private void OnMouseDown()
     {
-        Destroy(GameObject);
+        gameManager.UpdateScore(points);
+        Destroy(gameObject);
+        Instantiate(boom, transform.position, boom.transform.rotation);
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        
+        if (!gameObject.CompareTag("Bad"))
+        {
+            gameManager.GameOver();
+        }
         Destroy(gameObject);
     }
 }

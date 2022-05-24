@@ -59,6 +59,8 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -70,6 +72,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -82,6 +85,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!95 &3873863009954362168
 Animator:
   serializedVersion: 3
@@ -142,14 +146,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77fbd7eaee9bf14428d19d4b2a45fe45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMin: 12
-  forceMax: 16
-  torqueMax: 10
-  initialY: -2
-  initialPosXRange: 4
-  score: -10
-  explosionParticle: {fileID: 4758139293545943008, guid: c7ad2532a6eeb40b59033c75e71fa054,
-    type: 3}
+  points: -5
+  boom: {fileID: 3199346384015752365, guid: 307229a5540374aae98859caad2128a3, type: 3}
 --- !u!82 &9183793553632584888
 AudioSource:
   m_ObjectHideFlags: 0

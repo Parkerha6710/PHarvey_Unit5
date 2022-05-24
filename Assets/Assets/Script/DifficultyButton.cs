@@ -13,7 +13,7 @@ public class DifficultyButton : MonoBehaviour
     {
         button = GetComponent<Button>();
         button.onClick.AddListener(SetDifficulty);
-        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
     void SetDifficulty()
     {
